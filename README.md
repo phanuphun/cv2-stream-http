@@ -11,7 +11,7 @@ This repository i tried to learning about thread in python by using `opencv2` to
     - CAM_HEIGHT
     - CAM_FPS
 - Run `pip install -r requirements.txt` to install dependencies.
-- Run `app-bottle.py` to start server (http://localhost:8080)
+- Run `app.py` to start server (http://localhost:8080)
 
 ## API Path
 - GET `/` : health check 
