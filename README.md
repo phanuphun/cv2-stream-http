@@ -5,14 +5,12 @@ This repository i tried to learning about thread in python by using `opencv2` to
 
 ## Installation and Setup 
 - Create venv or you can use python global interpreter to compile 
-- Create `.env` and set env variables 
-    - CAM_ID
-    - CAM_WIDTH
-    - CAM_HEIGHT
-    - CAM_FPS
+- Create `.env` and set env variables (CAM_ID, CAM_WIDTH, CAM_HEIGHT, CAM_FPS)
 - Run `pip install -r requirements.txt` to install dependencies.
 - Run `app.py` to start server (http://localhost:8080)
 
 ## API Path
 - GET `/` : health check 
-- GET `/stream` : open camera streaming  
+- GET `/stream` : open camera streaming
+- GET `/snapshot` : snap shot from camera
+- GET `/stop` : stop camera streaming 
