@@ -10,30 +10,27 @@ class CamStream:
         self.cap = cv2.VideoCapture(cam_id, CAM_BACKEND)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self.cap.set(cv2.CAP_PROP_FPS, fps)
+        # self.cap.set(cv2.CAP_PROP_FPS, fps)
 
-        self.lock = threading.Lock()
         self.running = True
         self.latest_frame = None
-
         self.thread = threading.Thread(target=self._update_frame)
-        self.thread.daemon = True
         self.thread.start()
-    
+
     def _update_frame(self):
         while self.running:
             ret, frame = self.cap.read()
             if ret:
-                with self.lock:
-                    self.latest_frame = frame
+                self.latest_frame = frame
             else:
                 print("Error reading frame")
                 time.sleep(0.1)
         time.sleep(0.1)
 
-    def get_frame(self):
-        with self.lock:
-            return self.latest_frame.copy() if self.latest_frame is not None else None
+    def _snap_shot(self):
+        if self.latest_frame is not None:
+            return self.latest_frame.copy()
+        return None
 
     def stop(self):
         self.running = False

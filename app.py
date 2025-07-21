@@ -20,7 +20,7 @@ def stream():
     response.content_type = 'multipart/x-mixed-replace; boundary=frame'
     def generate():
         while True:
-            frame = cam_thread.get_frame()
+            frame = cam_thread.latest_frame
             if frame is None:
                 continue
 
@@ -32,6 +32,25 @@ def stream():
                    b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
 
     return generate()
+
+@app.route('/snapshot', method='GET')
+def snapshot():
+    response.content_type = 'image/jpeg'
+    frame = cam_thread._snap_shot()
+    if frame is not None:
+        (flag, encodedImage) = cv2.imencode(".jpg", frame)
+        if flag:
+            return encodedImage.tobytes()
+    return b''
+
+@app.route('/stop', method='GET')
+def stop():
+    cam_thread.stop()
+    response.content_type = 'application/json'
+    return {
+        "status": "stopped",
+        "timestamp": datetime.now().isoformat(),
+    }
 
 if __name__ == "__main__":
     cam_thread = CamStream(CAM_ID, CAM_WIDTH, CAM_HEIGHT, CAM_FPS)
